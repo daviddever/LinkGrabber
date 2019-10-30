@@ -1,0 +1,44 @@
+* {
+  box-sizing: border-box;
+}
+
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  position: relative;
+}
+
+.main-container {
+  min-height: 100vh; /* will cover the 100% of viewport */
+  overflow: hidden;
+  display: block;
+  position: relative;
+  padding-bottom: 100px; /* height of your footer */
+}
+
+footer {
+ position: absolute;
+ bottom: 0;
+ width: 100%;
+}
+
+.TFtable{
+  width:100%;
+  border-collapse:collapse;
+}
+.TFtable td{
+  padding:7px; border:#4e95f4 1px solid;
+}
+/*  Define the background color for all the ODD background rows  */
+.TFtable tr:nth-child(odd){
+  background: #b8d1f3;
+}
+/*  Define the background color for all the EVEN background rows  */
+.TFtable tr:nth-child(even){
+  background: #dae5f4;
+}
