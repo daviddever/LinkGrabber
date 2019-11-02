@@ -25,13 +25,13 @@ class GrabberBot(irc.bot.SingleServerIRCBot):
         if len(a) >1:
             nick = e.source.nick
             extractor = URLExtract()
-            url = extractor.find_urls(a[1].strip())
-            print(type(nick))
-            print(type(url))
-            print('{} {} posted {}'.format(str(datetime.datetime.now()), nick, url))
+            urls = extractor.find_urls(a[1].strip())
             with Database('links.db') as db:
-                db.execute('INSERT INTO links (datetime, nick, url) VALUES'
-                + ' (?,?,?)', (str(datetime.datetime.now()), nick, url[0]))
+                for url in urls:
+                    db.execute('INSERT INTO links (datetime, nick, url) VALUES'
+                    + ' (?,?,?)', (str(datetime.datetime.now()), nick, url))
+
+                    print('{} {} posted {}'.format(str(datetime.datetime.now()), nick, url))
 
 
 class Database:
@@ -63,7 +63,7 @@ class Database:
 def main():
     with Database('links.db') as db:
        db.execute('''CREATE TABLE IF NOT EXISTS links
-                    (datetima, nick, url)''')
+                    (datetime, nick, url)''')
 
     channel = os.getenv('IRC_channel', '#linkgrabber')
     nickname = os.getenv('IRC_nickname', 'grabberbot')

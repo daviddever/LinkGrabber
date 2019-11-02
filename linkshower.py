@@ -4,23 +4,43 @@ import sqlite3
 import os
 from flask import Flask
 from flask import render_template
+from flask import redirect
 
 app = Flask(__name__)
 
+channel = os.getenv('IRC_channel', '#linkgrabber')
+server = os.getenv('IRC_server', 'irc.freenode.net')
+
 @app.route('/')
-def index(name=None):
+def index():
+    return redirect('/1')
+
+@app.route('/<int:page_id>')
+def page(page_id):
     conn = sqlite3.connect('links.db')
     c = conn.cursor()
 
     links = []
-    channel = os.getenv('IRC_channel', '#linkgrabber')
-    server = os.getenv('IRC_server', 'irc.freenode.net')
 
-    for row in c.execute('''SELECT * FROM links '''):
+    limit = str(20)
+    offset = str((page_id * 20) - 20)
+
+    for row in c.execute('''SELECT * FROM links ORDER BY rowid
+                            DESC LIMIT {} OFFSET {}'''.format(limit, offset)):
         links.append(row)
+
+    c.close()
+
+    next_page = page_id + 1
+    if page_id - 1 < 1:
+        previous_page = 1
+    else:
+        previous_page = page_id - 1
 
     return render_template('links.html',
                             links=links,
                             server=server,
-                            channel=channel)
+                            channel=channel,
+                            next_page=next_page,
+                            previous_page=previous_page)
 
