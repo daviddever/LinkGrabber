@@ -10,7 +10,7 @@ from urlextract import URLExtract
 
 
 class GrabberBot(irc.bot.SingleServerIRCBot):
-    def __init__(self, channel, nickname, server, port, db_path):
+    def __init__(self, channel, nickname, server, port):
         irc.bot.SingleServerIRCBot.__init__(self, [(server, port)], nickname, nickname)
         self.channel = channel
 
@@ -26,6 +26,7 @@ class GrabberBot(irc.bot.SingleServerIRCBot):
             nick = e.source.nick
             extractor = URLExtract()
             urls = extractor.find_urls(a[1].strip())
+            db_path = '{}links.db'.format(os.getenv('IRC_db_path', './'))
             with Database(db_path) as db:
                 for url in urls:
                     db.execute('INSERT INTO links (datetime, nick, url) VALUES'
@@ -72,7 +73,7 @@ def main():
     server = os.getenv('IRC_server', 'irc.freenode.net')
     port = os.getenv('IRC_port', 6667)
 
-    bot = GrabberBot(channel, nickname, server, port, db_path)
+    bot = GrabberBot(channel, nickname, server, port)
     bot.start()
 
 
