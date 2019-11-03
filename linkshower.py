@@ -8,6 +8,7 @@ from flask import redirect
 
 app = Flask(__name__)
 
+db_path = '{}links.db'.format(os.getenv('IRC_db_path', './'))
 channel = os.getenv('IRC_channel', '#linkgrabber')
 server = os.getenv('IRC_server', 'irc.freenode.net')
 
@@ -17,7 +18,7 @@ def index():
 
 @app.route('/<int:page_id>')
 def page(page_id):
-    conn = sqlite3.connect('links.db')
+    conn = sqlite3.connect(db_path)
     c = conn.cursor()
 
     links = []
