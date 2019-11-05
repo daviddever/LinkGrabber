@@ -20,7 +20,7 @@ The following can be set as environmental variables
 
 **IRC_nickname**        name of the irc bot, default is `linkgrabber`
 
-**IRC_server**          irc server or network to connect to, default is 'irc.freenode.net'
+**IRC_server**          irc server or network to connect to, default is `irc.freenode.net`
 
 **IRC_port**            irc port ot use, default is `6667`
 
