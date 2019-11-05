@@ -3,9 +3,9 @@
 IRC bot to scrape links from a channel, store in a sqlite database and show in a simple web app.
 
 
-'linkgrabber.py' runs the irc bot and writes the links to the database, using irc and urlextract modules.
+`linkgrabber.py` runs the irc bot and writes the links to the database, using irc and urlextract modules.
 
-'linkshower.py' is a flask application that runs the site (just basic html and css).
+`linkshower.py` is a flask application that runs the site (just basic html and css).
 
 
 ![alt text](https://raw.githubusercontent.com/daviddever/LinkGrabber/master/sampleimage.png "Sample Image")
@@ -123,11 +123,14 @@ pip install -r requirements.txt
 
 **Set environmental variables** (options can be passed to the app as environmental variables detailed above but
 
-an additional environmental variable needs to be set for Flask
+an additional environmental variable needs to be set for Flask)
 
 `export FLASK_APP=linkshower.py`
-`export IRC_channel=#linkgrabber'
 
-Start the application
-`./linkgrabber.py'
-'flask run`
+`export IRC_channel=#linkgrabber`
+
+**Start the application**
+
+`./linkgrabber.py`
+
+`flask run`
