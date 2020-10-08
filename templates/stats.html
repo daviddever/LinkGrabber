@@ -2,18 +2,21 @@
 <html lang="en">
   <div class="main-container">
     <header>
-      <title>LinkGrabber {{ channel }} </title>
+      <title>LinkGrabber {{ channel }} Statistics </title>
       <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/main.css') }}">
     </header>
     <body>
       <h1>
-        {{ server }} {{ channel }}
+        Statistics for {{ server }} {{ channel }}
       </h1>
+      <h2>
+        Total Links: {{ total }}
+      </h2>
       <table class="TFtable">
-        {% for link in links %}
+        {% for host in hosts %}
         <tr>
           <td>
-            {{ link[0] }} {{ '<' }}{{ link[1] }}{{ '>' }}: <a href="https://{{ link[2] }}">{{ link[2] }}</a>
+            {{ host[1] }} {{ host[0] }}
           </td>
         </tr>
         {% endfor %}
@@ -21,9 +24,7 @@
     </body>
     <h2>
     <center>
-      <a href="/{{ previous_page }}">&lt;</a> <a href="/{{ next_page }}"}>&gt;</a>
-      <br>
-      <a href="/stats">Statistics</a>
+      <a href="/">Links</a>
     </center>
     <h2>
     <footer>
