@@ -22,17 +22,29 @@ class GrabberBot(irc.bot.SingleServerIRCBot):
 
     def on_pubmsg(self, c, e):
         a = e.arguments[0].split(":", 1)
-        if len(a) >1:
+        if len(a) > 1:
             nick = e.source.nick
             extractor = URLExtract()
             urls = extractor.find_urls(a[1].strip())
-            db_path = '{}links.db'.format(os.getenv('IRC_db_path', './'))
+            db_path = "{}links.db".format(os.getenv("IRC_db_path", "./"))
             with Database(db_path) as db:
                 for url in urls:
-                    db.execute('INSERT INTO links (datetime, nick, url) VALUES'
-                    + ' (?,?,?)', (str(datetime.datetime.now()), nick, url))
+                    db.execute(
+                        "INSERT INTO links (datetime, nick, url) VALUES" + " (?,?,?)",
+                        (
+                            str(f"{datetime.datetime.now():%Y-%m-%d %H:%M:%S}"),
+                            nick,
+                            url,
+                        ),
+                    )
 
-                    print('{} {} posted {}'.format(str(datetime.datetime.now()), nick, url))
+                    print(
+                        "{} {} posted {}".format(
+                            str(f"{datetime.datetime.now():%Y-%m-%d %H:%M:%S}"),
+                            nick,
+                            url,
+                        )
+                    )
 
 
 class Database:
@@ -61,25 +73,24 @@ class Database:
     def execute(self, sql, params=None):
         self.cursor.execute(sql, params or ())
 
+
 def main():
-    db_path = '{}links.db'.format(os.getenv('IRC_db_path', './'))
+    db_path = "{}links.db".format(os.getenv("IRC_db_path", "./"))
 
     with Database(db_path) as db:
-       db.execute('''CREATE TABLE IF NOT EXISTS links
-                    (datetime, nick, url)''')
+        db.execute(
+            """CREATE TABLE IF NOT EXISTS links
+                    (datetime, nick, url)"""
+        )
 
-    channel = os.getenv('IRC_channel', '#linkgrabber')
-    nickname = os.getenv('IRC_nickname', 'grabberbot')
-    server = os.getenv('IRC_server', 'irc.freenode.net')
-    port = os.getenv('IRC_port', 6667)
+    channel = os.getenv("IRC_channel", "#linkgrabber")
+    nickname = os.getenv("IRC_nickname", "grabberbot")
+    server = os.getenv("IRC_server", "irc.freenode.net")
+    port = os.getenv("IRC_port", 6667)
 
     bot = GrabberBot(channel, nickname, server, port)
     bot.start()
 
 
-
 if __name__ == "__main__":
     main()
-
-
-
