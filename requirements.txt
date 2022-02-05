@@ -1,0 +1,16 @@
+filelock==3.4.2
+idna==3.3
+irc==20.0.0
+jaraco.classes==3.2.1
+jaraco.collections==3.5.1
+jaraco.context==4.1.1
+jaraco.functools==3.5.0
+jaraco.logging==3.1.0
+jaraco.stream==3.0.3
+jaraco.text==3.7.0
+more-itertools==8.12.0
+platformdirs==2.4.1
+pytz==2021.3
+tempora==5.0.1
+uritools==4.0.0
+urlextract==1.5.0
