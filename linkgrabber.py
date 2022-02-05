@@ -85,7 +85,7 @@ def main():
 
     channel = os.getenv("IRC_channel", "#linkgrabber")
     nickname = os.getenv("IRC_nickname", "grabberbot")
-    server = os.getenv("IRC_server", "irc.freenode.net")
+    server = os.getenv("IRC_server", "irc.libera.chat")
     port = os.getenv("IRC_port", 6667)
 
     bot = GrabberBot(channel, nickname, server, port)

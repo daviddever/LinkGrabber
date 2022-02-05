@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 db_path = '{}links.db'.format(os.getenv('IRC_db_path', './'))
 channel = os.getenv('IRC_channel', '#linkgrabber')
-server = os.getenv('IRC_server', 'irc.freenode.net')
+server = os.getenv('IRC_server', 'irc.libera.chat')
 
 @app.route('/')
 def index():

@@ -1,3 +1,43 @@
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: black;
+    color: #bebebe;
+  }
+  a:link {
+    color: #a1c6f7;
+  }
+  a:visited {
+    color: #c6a1f7;
+  }
+  .TFtable td{
+    padding: 7px;
+    border: #bebebe 1px solid;
+  }
+  .TFtable tr:nth-child(odd){
+    background: #444444;
+  }
+  .TFtable tr:nth-child(even){
+    background: #878683;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  body {
+    background-color: white;
+    color: black;
+  }
+  .TFtable td{
+    padding: 7px;
+    border: #4e95f4 1px solid;
+  }
+  .TFtable tr:nth-child(odd){
+    background: #b8d1f3;
+  }
+  .TFtable tr:nth-child(even){
+    background: #dae5f4;
+  }
+}
+
 * {
   box-sizing: border-box;
 }
@@ -30,15 +70,4 @@ footer {
 .TFtable{
   width:100%;
   border-collapse:collapse;
-}
-.TFtable td{
-  padding:7px; border:#4e95f4 1px solid;
-}
-/*  Define the background color for all the ODD background rows  */
-.TFtable tr:nth-child(odd){
-  background: #b8d1f3;
-}
-/*  Define the background color for all the EVEN background rows  */
-.TFtable tr:nth-child(even){
-  background: #dae5f4;
 }
