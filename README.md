@@ -20,9 +20,9 @@ The following can be set as environmental variables
 
 **IRC_nickname**        name of the irc bot, default is `linkgrabber`
 
-**IRC_server**          irc server or network to connect to, default is `irc.freenode.net`
+**IRC_server**          irc server or network to connect to, default is `irc.libera.chat`
 
-**IRC_port**            irc port ot use, default is `6667`
+**IRC_port**            irc port to use, default is `6667`
 
 ## Setup
 
@@ -37,7 +37,7 @@ for web traffic to the linkshower container and irc traffic to the linkgrabber c
 containers will need access to the sqlite database which can be done using a shared volume.
 
 
-Both containers are based on Alpine, the linkshower container is built from 
+Both containers are based on Alpine, the linkshower container is built from
 
 [tiangolo/meinheld-gunicorn-flask](https://hub.docker.com/r/tiangolo/meinheld-gunicorn-flask) using Meinheld managed by Gunicorn for running the Flask
 
@@ -47,7 +47,7 @@ application.
 ```
 docker run -d -p 6667:6667 -e "IRC_channel=#linkgrabber" \
                            -e "IRC_nickname=grabberbot" \
-                           -e "IRC_server=irc.freenode.net" \
+                           -e "IRC_server=irc.libera.chat" \
                            -e "IRC_db_path=/db/" \
                            -v /db:/db" \
                            daviddever/linkgrabber:0.2
@@ -56,7 +56,7 @@ docker run -d -p 6667:6667 -e "IRC_channel=#linkgrabber" \
 ```
 docker run -d -p 80:80 -e "IRC_channel=#linkgrabber" \
                        -e "IRC_nickname=grabberbot" \
-                       -e "IRC_server=irc.freenode.net" \
+                       -e "IRC_server=irc.libera.chat" \
                        -e "IRC_db_path=/db/" \
                        -v /db:/db" \
                        daviddever/linkshower:0.2
@@ -75,7 +75,7 @@ services:
     environment:
       - IRC_channel=#linkgrabber
       - IRC_nickname=grabberbot
-      - IRC_server=irc.freenode.net
+      - IRC_server=irc.libera.chat
       - IRC_db_path=/db/
     volumes:
       - /db:/db
@@ -89,7 +89,7 @@ services:
     environment:
       - IRC_channel=#linkgrabber
       - IRC_nickname=grabberbot
-      - IRC_server=irc.freenode.net
+      - IRC_server=irc.libera.chat
       - IRC_db_path=/db/
     volumes:
       - /db:/db
@@ -107,7 +107,7 @@ is beyond the of these instructions, if you just want to run the application I r
 the Docker containers (see above) which runs the app with Meinheld and Gunicorn.
 
 
-Assuming Ubuntu 18.04
+Assuming Ubuntu 20.04
 
 **Install pip**
 
