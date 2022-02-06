@@ -1,6 +1,6 @@
 FROM python:3.8.0-alpine3.10
 
-RUN mkdir /usr/src/app/LinkGrabber
+RUN mkdir -p /usr/src/app/LinkGrabber
 
 COPY LICENSE README.md linkgrabber.py requirements.txt /usr/src/app/LinkGrabber
 
