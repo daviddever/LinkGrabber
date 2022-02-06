@@ -10,9 +10,10 @@ from urlextract import URLExtract
 
 
 class GrabberBot(irc.bot.SingleServerIRCBot):
-    def __init__(self, channel, nickname, server, port):
+    def __init__(self, channel, nickname, server, port, ignore):
         irc.bot.SingleServerIRCBot.__init__(self, [(server, port)], nickname, nickname)
         self.channel = channel
+        self.ignore = ignore
 
     def on_nicknameinuse(self, c, e):
         c.nick(c.get_nickname() + "_")
@@ -24,27 +25,28 @@ class GrabberBot(irc.bot.SingleServerIRCBot):
         a = e.arguments[0].split(":", 1)
         if len(a) > 1:
             nick = e.source.nick
-            extractor = URLExtract()
-            urls = extractor.find_urls(a[1].strip())
-            db_path = "{}links.db".format(os.getenv("IRC_db_path", "./"))
-            with Database(db_path) as db:
-                for url in urls:
-                    db.execute(
-                        "INSERT INTO links (datetime, nick, url) VALUES" + " (?,?,?)",
-                        (
-                            str(f"{datetime.datetime.now():%Y-%m-%d %H:%M:%S}"),
-                            nick,
-                            url,
-                        ),
-                    )
-
-                    print(
-                        "{} {} posted {}".format(
-                            str(f"{datetime.datetime.now():%Y-%m-%d %H:%M:%S}"),
-                            nick,
-                            url,
+            if not nick in self.ignore:
+                extractor = URLExtract()
+                urls = extractor.find_urls(a[1].strip())
+                db_path = "{}links.db".format(os.getenv("IRC_db_path", "./"))
+                with Database(db_path) as db:
+                    for url in urls:
+                        db.execute(
+                            "INSERT INTO links (datetime, nick, url) VALUES" + " (?,?,?)",
+                            (
+                                str(f"{datetime.datetime.now():%Y-%m-%d %H:%M:%S}"),
+                                nick,
+                                url,
+                            ),
                         )
-                    )
+
+                        print(
+                            "{} {} posted {}".format(
+                                str(f"{datetime.datetime.now():%Y-%m-%d %H:%M:%S}"),
+                                nick,
+                                url,
+                            )
+                        )
 
 
 class Database:
@@ -87,8 +89,9 @@ def main():
     nickname = os.getenv("IRC_nickname", "grabberbot")
     server = os.getenv("IRC_server", "irc.libera.chat")
     port = os.getenv("IRC_port", 6667)
+    ignore = os.getenv("IRC_ignore")
 
-    bot = GrabberBot(channel, nickname, server, port)
+    bot = GrabberBot(channel, nickname, server, port, ignore)
     bot.start()
 
 

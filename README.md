@@ -2,11 +2,9 @@
 
 IRC bot to scrape links from a channel, store in a sqlite database and show in a simple web app ([https://github.com/daviddever/LinkShower](LinkShower))
 
-
 `linkgrabber.py` runs the irc bot and writes the links to the database, using irc and urlextract modules.
 
 `linkshower.py` (in [https://github.com/daviddever/LinkShower](LinkShower)) in is a flask application that runs the site (just basic html and css).
-
 
 ![alt text](https://raw.githubusercontent.com/daviddever/LinkGrabber/master/sampleimage.png "Sample Image")
 
@@ -14,15 +12,17 @@ IRC bot to scrape links from a channel, store in a sqlite database and show in a
 
 The following can be set as environmental variables
 
-**IRC_db_path**         location to create and access sqlite database default is `./`
+**IRC_db_path** location to create and access sqlite database default is `./`
 
-**IRC_channel**         irc channel name, default is `#linkgrabber`
+**IRC_channel** irc channel name, default is `#linkgrabber`
 
-**IRC_nickname**        name of the irc bot, default is `linkgrabber`
+**IRC_nickname** name of the irc bot, default is `linkgrabber`
 
-**IRC_server**          irc server or network to connect to, default is `irc.libera.chat`
+**IRC_server** irc server or network to connect to, default is `irc.libera.chat`
 
-**IRC_port**            irc port to use, default is `6667`
+**IRC_port** irc port to use, default is `6667`
+
+**IRC_ignore** space sperated list of nicks to ignore, ie `nick1 nick2`, no default
 
 ## Setup
 
@@ -36,13 +36,11 @@ for web traffic to the linkshower container and irc traffic to the linkgrabber c
 
 containers will need access to the sqlite database which can be done using a shared volume.
 
-
 Both containers are based on Alpine, the linkshower container is built from
 
 [tiangolo/meinheld-gunicorn-flask](https://hub.docker.com/r/tiangolo/meinheld-gunicorn-flask) using Meinheld managed by Gunicorn for running the Flask
 
 application.
-
 
 ```
 docker run -d -p 6667:6667 -e "IRC_channel=#linkgrabber" \
@@ -102,10 +100,9 @@ services:
 
 Flask has a built in web server but this should not be used outside of testing, setting up which
 
-is beyond the of these instructions, if you just want to run the application I recommend using 
+is beyond the of these instructions, if you just want to run the application I recommend using
 
 the Docker containers (see above) which runs the app with Meinheld and Gunicorn.
-
 
 Assuming Ubuntu 20.04
 
