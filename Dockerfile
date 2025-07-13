@@ -1,4 +1,4 @@
-FROM python:3.8.0-alpine3.10
+FROM python:3.12-alpine
 
 RUN mkdir -p /usr/src/app/LinkGrabber
 
