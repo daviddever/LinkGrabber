@@ -1,5 +1,5 @@
 filelock==3.4.2
-idna==3.3
+idna==3.7
 irc==20.0.0
 jaraco.classes==3.2.1
 jaraco.collections==3.5.1
