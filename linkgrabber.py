@@ -1,5 +1,6 @@
 #! /usr/bin/env python3
 
+import itertools
 import irc.bot
 import irc.strings
 import datetime
@@ -9,11 +10,31 @@ from irc.client import ip_numstr_to_quad, ip_quad_to_numstr
 from urlextract import URLExtract
 
 
+class ResettingBackoff(irc.bot.ExponentialBackoff):
+    """Exponential backoff that resets the attempt counter after a successful reconnect."""
+
+    min_interval = 10
+    max_interval = 300
+
+    def run(self, bot):
+        super().run(bot)
+        bot.connection.add_global_handler("welcome", self._on_welcome, -30)
+
+    def _on_welcome(self, connection, event):
+        self.attempt_count = itertools.count(1)
+        self._check_scheduled = False
+
+
 class GrabberBot(irc.bot.SingleServerIRCBot):
     def __init__(self, channel, nickname, server, port, ignore):
-        irc.bot.SingleServerIRCBot.__init__(self, [(server, port)], nickname, nickname)
+        irc.bot.SingleServerIRCBot.__init__(
+            self, [(server, port)], nickname, nickname, recon=ResettingBackoff()
+        )
         self.channel = channel
         self.ignore = ignore
+
+    def on_disconnect(self, c, e):
+        print(f"{datetime.datetime.now():%Y-%m-%d %H:%M:%S} disconnected, reconnecting...")
 
     def on_nicknameinuse(self, c, e):
         c.nick(c.get_nickname() + "_")
@@ -88,7 +109,7 @@ def main():
     channel = os.getenv("IRC_channel", "#linkgrabber")
     nickname = os.getenv("IRC_nickname", "grabberbot")
     server = os.getenv("IRC_server", "irc.libera.chat")
-    port = os.getenv("IRC_port", 6667)
+    port = int(os.getenv("IRC_port", 6667))
     ignore = os.getenv("IRC_ignore")
 
     bot = GrabberBot(channel, nickname, server, port, ignore)
